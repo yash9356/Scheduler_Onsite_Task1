@@ -12,13 +12,15 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        String Event_Name=MainActivity.getInstance().getEvent_Name();
+
         Intent i=new Intent(context,DestinationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent= PendingIntent.getActivity(context,0,i,0);
         NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"scheduler")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("Scheduler Alarm Manager")
-                .setContentText("Time Over")
+                .setContentText(Event_Name)
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

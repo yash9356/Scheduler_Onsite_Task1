@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.onsite_task1_scheduler.databinding.ActivityMainBinding;
@@ -22,8 +23,11 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private static MainActivity instance;
     private MaterialTimePicker picker;
     private Calendar calendar;
+    public String Event_Name;
+    private EditText EventName;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     @Override
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         binding =ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         createNotificationChannel();
+        instance =this;
+        EventName=findViewById(R.id.EventName);
 
         binding.selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String Event_Name =EventName.getText().toString();
                 setAlarm();
             }
         });
@@ -51,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
         binding.CancleAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 cancleAlarm();
             }
         });
+    }
+
+
+    public static MainActivity getInstance(){
+        return instance;
     }
 
     private void cancleAlarm() {
@@ -69,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"Alarm Cancelled",Toast.LENGTH_SHORT).show();
 
     }
+     public String getEvent_Name(){
+        return Event_Name;
+     }
 
     private void setAlarm() {
         alarmManager =(AlarmManager) getSystemService(Context.ALARM_SERVICE);
