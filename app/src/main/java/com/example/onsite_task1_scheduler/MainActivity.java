@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.onsite_task1_scheduler.databinding.ActivityMainBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         createNotificationChannel();
 
-        binding.selectedTime.setOnClickListener(new View.OnClickListener() {
+        binding.selectTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimePicker();
@@ -51,15 +52,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                cancleAlarm();
             }
         });
+    }
+
+    private void cancleAlarm() {
+        Intent intent =new Intent(this,AlarmReceiver.class);
+
+        pendingIntent =PendingIntent.getBroadcast(this,0,intent,0);
+        if(alarmManager ==null){
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        }
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(this,"Alarm Cancelled",Toast.LENGTH_SHORT).show();
+
     }
 
     private void setAlarm() {
         alarmManager =(AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent =new Intent(this,AlarmReceiver.class);
         pendingIntent =PendingIntent.getBroadcast(this,0,intent,0);
-//        alarmManager.setInexactRepeating();
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+        //alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+        Toast.makeText(this,"Alarm set Sucessfully",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -78,11 +96,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(picker.getHour() > 12){
                     binding.selectedTime.setText(
-                            String.format("%02d",(picker.getHour()-12)+":"+String.format("%02d",picker.getMinute())+"PM"));
+                            String.format("%02d",(picker.getHour()-12))+":"+String.format("%02d",picker.getMinute())+" PM"
+                    );
 
                 }
                 else {
-                    binding.selectedTime.setText(picker.getHour()+":"+picker.getMinute()+"AM");
+                    binding.selectedTime.setText(picker.getHour()+":"+picker.getMinute()+" AM");
                 }
 
                 calendar = Calendar.getInstance();
@@ -109,6 +128,6 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
 
         }
-        //15min after alarm
+
     }
 }
