@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
     private MaterialTimePicker picker;
     private Calendar calendar;
-    public String Event_Name;
+    public String Event_Name=" ";
     private EditText EventName;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Event_Name =EventName.getText().toString();
+                 Event_Name =EventName.getText().toString();
                 setAlarm();
             }
         });
@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static MainActivity getInstance(){
-        return instance;
-    }
 
     private void cancleAlarm() {
         Intent intent =new Intent(this,AlarmReceiver.class);
@@ -80,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
      public String getEvent_Name(){
+        Event_Name =EventName.getText().toString();
         return Event_Name;
      }
 

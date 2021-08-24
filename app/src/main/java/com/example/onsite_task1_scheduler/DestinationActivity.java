@@ -13,8 +13,7 @@ public class DestinationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destination);
 
-        EventName=findViewById(R.id.EventName3);
-        String Event_Name=MainActivity.getInstance().getEvent_Name();
-        EventName.setText(Event_Name);
+//        EventName=findViewById(R.id.EventName3);
+//        EventName.setText("Time Over ");
     }
 }
